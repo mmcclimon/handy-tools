@@ -1,22 +1,20 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"regexp"
+
+	"github.com/mmcclimon/handy-tools/internal/utils"
 )
 
 var blank = regexp.MustCompile(`\A\s*\z`)
 
 func main() {
-	scanner := bufio.NewScanner(os.Stdin)
+	lines := utils.DiamondOperator()
 
 	prevWasEmpty := true
 
-	for scanner.Scan() {
-		line := scanner.Text()
-
+	for line := range lines {
 		isEmpty := blank.MatchString(line)
 
 		if isEmpty && prevWasEmpty {
