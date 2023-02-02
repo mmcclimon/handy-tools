@@ -154,8 +154,8 @@ func outputStats(stats Stats, suppressFiles bool) {
 	fmt.Printf(
 		"avg of %.2f commits per day, from %s to %s (%s)\n",
 		float64(stats.numCommits)/float64(nDays),
-		stats.first.Format("2006-01-02"),
-		stats.last.Format("2006-01-02"),
+		stats.first.Format(time.DateOnly),
+		stats.last.Format(time.DateOnly),
 		formatDuration(stats.last.Sub(stats.first)),
 	)
 }
