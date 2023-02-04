@@ -146,7 +146,7 @@ func outputStats(stats Stats, suppressFiles bool) {
 
 	totals := stats.totals
 	average := float64(totals.plus+totals.minus) / float64(stats.numCommits)
-	fmt.Printf("%d commits total(+%d/-%d)\n", stats.numCommits, totals.plus, totals.minus)
+	fmt.Printf("%d commits total (+%d/-%d)\n", stats.numCommits, totals.plus, totals.minus)
 	fmt.Printf("avg of %.2f lines diff per commit\n", average)
 
 	nDays := int(stats.last.Sub(stats.first).Seconds() / 86400)
