@@ -25,7 +25,7 @@ func main() {
 
 	format := "Monday, 15:04"
 
-	fmt.Printf("%s: %s <-- you are here\n", "🇺🇸", now.In(us).Format(format))
-	fmt.Printf("%s: %s\n", "🌐", now.In(time.UTC).Format(format))
-	fmt.Printf("%s: %s\n", "🇦🇺", now.In(au).Format(format))
+	fmt.Printf("%s : %s <-- you are here\n", "🇺🇸", now.In(us).Format(format))
+	fmt.Printf("%s : %s\n", "🇺🇳", now.In(time.UTC).Format(format))
+	fmt.Printf("%s : %s\n", "🇦🇺", now.In(au).Format(format))
 }
