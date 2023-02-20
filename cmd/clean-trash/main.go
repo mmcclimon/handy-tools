@@ -22,7 +22,7 @@ type options struct {
 func main() {
 	flags := cli.NewFlagSet("clean-trash")
 	flags.BoolVarP(&opts.quiet, "quiet", "q", false, "be quiet")
-	flags.BoolVar(&opts.really, "really", false, "actully delete stuff")
+	flags.BoolVar(&opts.really, "really", false, "actually delete stuff")
 	cli.ParseFlags(flags)
 
 	err := filepath.WalkDir(root, processPath)
