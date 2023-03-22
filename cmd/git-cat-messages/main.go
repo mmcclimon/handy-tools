@@ -12,7 +12,8 @@ var temp *os.File
 
 func main() {
 	// simple for now, more later
-	gitArgs := []string{"log", "main..", "--format=%s%n%b%n", "--reverse"}
+	gitArgs := []string{"log", "main..", "--format=%s%n%n%b%n%n", "--reverse"}
+	diffArgs := []string{"diff", "main.."}
 
 	var err error
 	temp, err = os.CreateTemp("", "catmsg-")
@@ -24,8 +25,16 @@ func main() {
 	handleErr(err)
 
 	// deliberately ignoring errors here; it's fine.
-	temp.WriteString("# vim: ft=gitcommit\n\n")
 	temp.Write(out)
+
+	// and print the diff.
+	git = exec.Command("git", diffArgs...)
+	out, err = git.Output()
+	handleErr(err)
+
+	temp.WriteString("# ------------------------ >8 ------------------------\n")
+	temp.Write(out)
+	temp.WriteString("\n\n# vim: ft=gitcommit\n")
 
 	// we're gonna print it, and then exec vim for it
 	fmt.Println(temp.Name())
