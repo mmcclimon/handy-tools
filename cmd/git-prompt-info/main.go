@@ -18,7 +18,7 @@ func main() {
 	}
 
 	var sha, head string
-	var isDirty int
+	var isDirty, isWeird int
 
 	scanner := bufio.NewScanner(bytes.NewReader(out))
 
@@ -37,6 +37,15 @@ line:
 		}
 	}
 
+	for _, f := range []string{"REBASE", "MERGE", "CHERRY_PICK"} {
+		cmd := exec.Command("git", "rev-parse", "--verify", fmt.Sprintf("%s_HEAD", f))
+		err := cmd.Run()
+		if err == nil {
+			isWeird = 1
+			break
+		}
+	}
+
 	prep := "on"
 	branch := head
 
@@ -45,5 +54,5 @@ line:
 		branch = sha[0:8]
 	}
 
-	fmt.Printf("1 %s %s %d\n", prep, branch, isDirty)
+	fmt.Printf("1 %s %s %d %d\n", prep, branch, isDirty, isWeird)
 }
