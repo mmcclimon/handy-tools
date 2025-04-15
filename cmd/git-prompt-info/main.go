@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -37,9 +39,27 @@ line:
 		}
 	}
 
-	for _, f := range []string{"REBASE", "MERGE", "CHERRY_PICK"} {
-		cmd := exec.Command("git", "rev-parse", "--verify", fmt.Sprintf("%s_HEAD", f))
-		err := cmd.Run()
+	// Check for weird cases (in the middle of rebase or whatever).
+	weirdIndicators := []string{
+		"rebase-apply",
+		"rebase-merge",
+		"MERGE_HEAD",
+		"CHERRY_PICK_HEAD",
+		"REVERT_HEAD",
+	}
+
+	cmd = exec.Command("git", "rev-parse", "--git-dir")
+	out, err = cmd.Output()
+
+	if err != nil {
+		fmt.Println("0")
+		return
+	}
+
+	gitDir := strings.TrimSpace(string(out))
+
+	for _, f := range weirdIndicators {
+		_, err := os.Stat(filepath.Join(gitDir, f))
 		if err == nil {
 			isWeird = 1
 			break
