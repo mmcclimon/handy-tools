@@ -3,10 +3,19 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
 const day = 24 * time.Hour
+
+var formats = []string{
+	time.RFC3339Nano,
+	time.RFC3339,
+	time.DateTime,
+	time.DateOnly,
+	time.TimeOnly,
+}
 
 func main() {
 	if len(os.Args) != 3 {
@@ -30,11 +39,18 @@ func main() {
 }
 
 func parse(what string) time.Time {
-	t, err := time.Parse(time.RFC3339Nano, what)
-	if err != nil {
-		fmt.Printf("could not parse %q as time: %s\n", what, err)
-		os.Exit(1)
+	if strings.ToLower(what) == "now" {
+		return time.Now()
 	}
 
-	return t
+	for _, format := range formats {
+		t, err := time.Parse(format, what)
+		if err == nil {
+			return t
+		}
+	}
+
+	fmt.Printf("could not parse %q as time\n", what)
+	os.Exit(1)
+	panic("unreachable")
 }
