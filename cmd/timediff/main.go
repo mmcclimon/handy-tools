@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const day = 24 * time.Hour
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("usage: timediff START END")
@@ -15,7 +17,16 @@ func main() {
 	start := parse(os.Args[1])
 	end := parse(os.Args[2])
 
-	fmt.Println(end.Sub(start).Truncate(time.Second))
+	delta := end.Sub(start).Truncate(time.Second)
+	var days string
+
+	if delta > day {
+		d := time.Duration(delta / day)
+		capped := delta - d*day
+		days = fmt.Sprintf(" (%dd + %s)", d, capped)
+	}
+
+	fmt.Printf("%s%s\n", delta, days)
 }
 
 func parse(what string) time.Time {
