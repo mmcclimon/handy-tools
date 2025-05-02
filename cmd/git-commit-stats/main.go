@@ -130,6 +130,11 @@ func computeStats(gitArgs []string) Stats {
 }
 
 func outputStats(stats Stats, suppressFiles bool) {
+	if stats.numCommits == 0 {
+		fmt.Println("no commits found")
+		return
+	}
+
 	if !suppressFiles {
 		keys := maps.Keys(stats.files)
 		sort.Strings(keys)
