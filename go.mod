@@ -1,6 +1,6 @@
 module github.com/mmcclimon/handy-tools
 
-go 1.20
+go 1.24
 
 require golang.org/x/sys v0.4.0
 

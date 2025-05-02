@@ -4,15 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"maps"
 	"os"
 	"os/exec"
 	"regexp"
-	"sort"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
-
-	"golang.org/x/exp/maps"
 )
 
 type Stats struct {
@@ -136,8 +135,7 @@ func outputStats(stats Stats, suppressFiles bool) {
 	}
 
 	if !suppressFiles {
-		keys := maps.Keys(stats.files)
-		sort.Strings(keys)
+		keys := slices.Sorted(maps.Keys(stats.files))
 
 		for _, path := range keys {
 			pm := stats.files[path]

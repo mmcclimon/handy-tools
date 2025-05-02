@@ -25,16 +25,16 @@ func main() {
 	handleErr(err)
 
 	// deliberately ignoring errors here; it's fine.
-	temp.Write(out)
+	_, _ = temp.Write(out)
 
 	// and print the diff.
 	git = exec.Command("git", diffArgs...)
 	out, err = git.Output()
 	handleErr(err)
 
-	temp.WriteString("# ------------------------ >8 ------------------------\n")
-	temp.Write(out)
-	temp.WriteString("\n\n# vim: ft=gitcommit\n")
+	_, _ = temp.WriteString("# ------------------------ >8 ------------------------\n")
+	_, _ = temp.Write(out)
+	_, _ = temp.WriteString("\n\n# vim: ft=gitcommit\n")
 
 	// we're gonna print it, and then exec vim for it
 	fmt.Println(temp.Name())
